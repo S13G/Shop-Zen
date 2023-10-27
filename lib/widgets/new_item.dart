@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_zen/data/categories.dart';
 import 'package:shop_zen/models/category.dart';
+import 'package:shop_zen/models/grocery_item.dart';
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -21,9 +22,15 @@ class _NewItemState extends State<NewItem> {
   void _saveItem() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print(_enterQuantity);
-      print(_enteredName);
-      print(_selectedCategory);
+      // sending the data back to the previous screen
+      Navigator.of(context).pop(
+        GroceryItem(
+          id: DateTime.now().toString(),
+          name: _enteredName,
+          quantity: _enterQuantity,
+          category: _selectedCategory,
+        ),
+      );
     }
   }
 
@@ -84,7 +91,7 @@ class _NewItemState extends State<NewItem> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: DropdownButtonFormField(
-                      value: _selectedCategory,
+                        value: _selectedCategory,
                         items: [
                           // convert categories map to a list using entries
                           for (final category in categories.entries)

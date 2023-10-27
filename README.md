@@ -1,16 +1,30 @@
-# shop_zen
+# Shop Zen
 
-A shopping list app
+## Overview
+
+Shop Zen is the shopping companion that simplifies your grocery and to-do lists. With its simple design, shopping and organizing tasks have never been this Zen.
+
+## Features
+
+- **Intuitive Shopping List**: Easily create and manage your shopping lists in a simple way. Add items you need to purchase with a simple and user-friendly form
+- **Swipe to Remove**: Swipe items to the right to effortlessly remove them from your list.
+- **Organized Shopping**: Stay organized and avoid missing any essential items on your shopping trips.
+- **User-Friendly Design**: Enjoy a clean and minimalist design that makes managing your lists a breeze.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Prerequisites
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter installed on your machine. [Install Flutter](https://flutter.dev/docs/get-started/install)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Clone this repository.
+  `git clone https://github.com/S13G/Shop-Zen.git`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Enter folder
+  `cd Shop-Zen`
+
+- Install dependencies
+  `flutter pub get`
+
+- Run the app
+  `flutter run`

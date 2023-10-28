@@ -17,6 +17,7 @@ class _GroceryListState extends State<GroceryList> {
   List<GroceryItem> _groceryItems = [];
 
   var _isLoading = true;
+  String? _error;
 
   @override
   void initState() {
@@ -31,8 +32,13 @@ class _GroceryListState extends State<GroceryList> {
     );
     final response = await http.get(url);
 
-    final Map<String, dynamic> listData =
-        json.decode(response.body);
+    if (response.statusCode >= 400) {
+      setState(() {
+        _error = 'Failed to fetch data. please try again later';
+      });
+    }
+
+    final Map<String, dynamic> listData = json.decode(response.body);
 
     final List<GroceryItem> loadedItems = [];
 
@@ -71,7 +77,6 @@ class _GroceryListState extends State<GroceryList> {
       _groceryItems.add(newItem);
     });
   }
-
 
   void _removeItem(GroceryItem item) {
     setState(() {
@@ -113,6 +118,13 @@ class _GroceryListState extends State<GroceryList> {
         ),
       );
     }
+
+    if (_error != null) {
+      content = Center(
+        child: Text(_error!),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Groceries'),

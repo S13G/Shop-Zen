@@ -46,7 +46,7 @@ class _GroceryListState extends State<GroceryList> {
       final category = categories.entries
           .firstWhere(
             (catItem) => catItem.value.title == item.value['category'],
-          )
+      )
           .value;
 
       loadedItems.add(
@@ -78,10 +78,24 @@ class _GroceryListState extends State<GroceryList> {
     });
   }
 
-  void _removeItem(GroceryItem item) {
+  void _removeItem(GroceryItem item) async {
+    final index = _groceryItems.indexOf(item);
     setState(() {
       _groceryItems.remove(item);
     });
+
+    final url = Uri.https(
+      'fir-course-2e261-default-rtdb.firebaseio.com',
+      'shopping-list/${item.id}.json',
+    );
+
+    final response = await http.get(url);
+
+    if (response.statusCode >= 400) {
+      setState(() {
+        _groceryItems.insert(index, item);
+      });
+    }
   }
 
   @override
@@ -99,23 +113,24 @@ class _GroceryListState extends State<GroceryList> {
     if (_groceryItems.isNotEmpty) {
       content = ListView.builder(
         itemCount: _groceryItems.length,
-        itemBuilder: (ctx, index) => Dismissible(
-          key: ValueKey(_groceryItems[index].id),
-          onDismissed: (direction) {
-            _removeItem(_groceryItems[index]);
-          },
-          child: ListTile(
-            title: Text(_groceryItems[index].name),
-            leading: Container(
-              width: 24,
-              height: 24,
-              color: _groceryItems[index].category.color,
+        itemBuilder: (ctx, index) =>
+            Dismissible(
+              key: ValueKey(_groceryItems[index].id),
+              onDismissed: (direction) {
+                _removeItem(_groceryItems[index]);
+              },
+              child: ListTile(
+                title: Text(_groceryItems[index].name),
+                leading: Container(
+                  width: 24,
+                  height: 24,
+                  color: _groceryItems[index].category.color,
+                ),
+                trailing: Text(
+                  _groceryItems[index].quantity.toString(),
+                ),
+              ),
             ),
-            trailing: Text(
-              _groceryItems[index].quantity.toString(),
-            ),
-          ),
-        ),
       );
     }
 

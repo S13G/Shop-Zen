@@ -38,6 +38,13 @@ class _GroceryListState extends State<GroceryList> {
       });
     }
 
+    if (response.body == 'null') {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
     final Map<String, dynamic> listData = json.decode(response.body);
 
     final List<GroceryItem> loadedItems = [];
@@ -46,7 +53,7 @@ class _GroceryListState extends State<GroceryList> {
       final category = categories.entries
           .firstWhere(
             (catItem) => catItem.value.title == item.value['category'],
-      )
+          )
           .value;
 
       loadedItems.add(
@@ -113,24 +120,23 @@ class _GroceryListState extends State<GroceryList> {
     if (_groceryItems.isNotEmpty) {
       content = ListView.builder(
         itemCount: _groceryItems.length,
-        itemBuilder: (ctx, index) =>
-            Dismissible(
-              key: ValueKey(_groceryItems[index].id),
-              onDismissed: (direction) {
-                _removeItem(_groceryItems[index]);
-              },
-              child: ListTile(
-                title: Text(_groceryItems[index].name),
-                leading: Container(
-                  width: 24,
-                  height: 24,
-                  color: _groceryItems[index].category.color,
-                ),
-                trailing: Text(
-                  _groceryItems[index].quantity.toString(),
-                ),
-              ),
+        itemBuilder: (ctx, index) => Dismissible(
+          key: ValueKey(_groceryItems[index].id),
+          onDismissed: (direction) {
+            _removeItem(_groceryItems[index]);
+          },
+          child: ListTile(
+            title: Text(_groceryItems[index].name),
+            leading: Container(
+              width: 24,
+              height: 24,
+              color: _groceryItems[index].category.color,
             ),
+            trailing: Text(
+              _groceryItems[index].quantity.toString(),
+            ),
+          ),
+        ),
       );
     }
 
